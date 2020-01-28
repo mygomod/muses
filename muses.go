@@ -6,7 +6,12 @@ import (
 	"github.com/goecology/muses/pkg/common"
 	"github.com/goecology/muses/pkg/logger"
 	"github.com/goecology/muses/pkg/prom"
+	"github.com/goecology/muses/pkg/system"
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
+
+var filePath string
 
 func Container(cfg interface{}, callerFuncs ...common.CallerFunc) (err error) {
 	var cfgByte []byte
@@ -16,11 +21,17 @@ func Container(cfg interface{}, callerFuncs ...common.CallerFunc) (err error) {
 		if err != nil {
 			return
 		}
+		filePath = cfg.(string)
 	case []byte:
 		cfgByte = cfg.([]byte)
 	default:
 		return fmt.Errorf("type is error %s", cfg)
 	}
+
+	initViper()
+	system.InitRunInfo()
+	fmt.Println(system.BuildInfo.LongForm())
+	fmt.Println(system.RunInfo.LongForm())
 
 	allCallers := []common.CallerFunc{app.Register, logger.Register, prom.Register}
 	allCallers = append(allCallers, callerFuncs...)
@@ -29,10 +40,11 @@ func Container(cfg interface{}, callerFuncs ...common.CallerFunc) (err error) {
 	if err != nil {
 		return
 	}
+	fmt.Println("version 1 ==============>")
 
 	for _, caller := range callers {
 		name := getCallerName(caller)
-		fmt.Println("module", name, "start")
+		fmt.Println("module", name, "start1")
 		if err = caller.InitCfg(cfgByte); err != nil {
 			fmt.Println("module", name, "init config error")
 			return
@@ -46,4 +58,17 @@ func Container(cfg interface{}, callerFuncs ...common.CallerFunc) (err error) {
 		fmt.Println("module", name, "end")
 	}
 	return nil
+}
+
+// todo
+func initViper() {
+	cobra.OnInitialize(initConfig)
+}
+
+func initConfig() {
+	viper.SetConfigFile(filePath)
+	viper.AutomaticEnv() // read in environment variables that match
+	if err := viper.ReadInConfig(); err == nil {
+		fmt.Println("Using config file:", viper.ConfigFileUsed())
+	}
 }
