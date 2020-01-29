@@ -28,7 +28,9 @@ func Container(cfg interface{}, callerFuncs ...common.CallerFunc) (err error) {
 		return fmt.Errorf("type is error %s", cfg)
 	}
 
+	// 初始化 viper 配置信息
 	initViper()
+	// 初始化 启动信息
 	system.InitRunInfo()
 	fmt.Println(system.BuildInfo.LongForm())
 	fmt.Println(system.RunInfo.LongForm())
@@ -40,11 +42,10 @@ func Container(cfg interface{}, callerFuncs ...common.CallerFunc) (err error) {
 	if err != nil {
 		return
 	}
-	fmt.Println("version 1 ==============>")
 
 	for _, caller := range callers {
 		name := getCallerName(caller)
-		fmt.Println("module", name, "start1")
+		fmt.Println("module", name, "start")
 		if err = caller.InitCfg(cfgByte); err != nil {
 			fmt.Println("module", name, "init config error")
 			return

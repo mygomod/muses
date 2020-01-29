@@ -1,10 +1,9 @@
 package muses
 
 import (
+	"github.com/goecology/muses/pkg/common"
 	"io/ioutil"
 	"reflect"
-
-	"github.com/goecology/muses/pkg/common"
 )
 
 // 通过反射取包里面的值
