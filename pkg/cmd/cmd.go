@@ -1,12 +1,13 @@
-package app
+package cmd
 
 import (
-	"github.com/BurntSushi/toml"
+	"fmt"
 	"github.com/goecology/muses/pkg/common"
+	"os"
 )
 
 var defaultCaller = &callerStore{
-	Name:        common.ModAppName,
+	Name:        common.ModCmdName,
 	IsNecessary: true,
 }
 
@@ -29,12 +30,14 @@ func Config() Cfg {
 }
 
 func (c *callerStore) InitCfg(cfg []byte) error {
-	if err := toml.Unmarshal(cfg, &c.cfg); err != nil {
-		return err
-	}
+	c.initStart()
 	return nil
 }
 
 func (c *callerStore) InitCaller() error {
+	if err := common.RootCmd.Execute(); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 	return nil
 }

@@ -47,6 +47,9 @@ func (c *callerStore) InitCaller() error {
 func provider(cfg CallerCfg) (session gin.HandlerFunc, err error) {
 	var store redis.Store
 	store, err = redis.NewStore(cfg.Size, cfg.Network, cfg.Addr, cfg.Pwd, []byte(cfg.Keypairs))
+	if err != nil {
+		return
+	}
 	session = sessions.Sessions(cfg.Name, store)
 	return
 }

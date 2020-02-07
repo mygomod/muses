@@ -5,6 +5,7 @@ const MetricPrefix = "goecology"
 
 const ModAppName = "app"
 const ModLoggerName = "logger"
+const ModCmdName = "cmd"
 const ModPromName = "prom"
 const ModMysqlName = "mysql"
 const ModRedisName = "redis"

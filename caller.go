@@ -19,6 +19,7 @@ var orderCallerList = []callerAttr{
 	{common.ModTplBeegoName},
 	{common.ModStatName},
 	{common.ModGinName},
+	{common.ModCmdName},
 }
 
 type callerAttr struct {

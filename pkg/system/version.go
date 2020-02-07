@@ -10,6 +10,7 @@ import (
 // The following fields are populated at build time using -ldflags -X.
 // Note that DATE is omitted for reproducible builds
 var (
+	buildName        = "unknown"
 	buildVersion     = "unknown"
 	buildGitRevision = "unknown"
 	buildUser        = "unknown"
@@ -20,6 +21,7 @@ var (
 
 // BuildInfo describes version information about the binary build.
 type buildInfo struct {
+	Name          string `json:"name"`
 	Version       string `json:"version"`
 	GitRevision   string `json:"gitRevision"`
 	User          string `json:"user"`
@@ -57,7 +59,7 @@ func InitRunInfo() {
 // This looks like:
 //
 // ```
-// user@host-<version>-<git revision>-<build status>
+// name-user@host-<version>-<git revision>-<build status>
 // ```
 func (b buildInfo) String() string {
 	return fmt.Sprintf("%v@%v-%v-%v-%v-%v",
@@ -81,13 +83,15 @@ func (b buildInfo) String() string {
 // BuildStatus: <build status>
 // ```
 func (b buildInfo) LongForm() string {
-	return fmt.Sprintf(`Version: %v
+	return fmt.Sprintf(`Name: %v
+Version: %v
 GitRevision: %v
 User: %v@%v
 GolangVersion: %v
 BuildStatus: %v
 BuildTime: %v
 `,
+		b.Name,
 		b.Version,
 		b.GitRevision,
 		b.User,
@@ -118,6 +122,7 @@ StartTime: %v
 
 func init() {
 	BuildInfo = buildInfo{
+		Name:          buildName,
 		Version:       buildVersion,
 		GitRevision:   buildGitRevision,
 		User:          buildUser,

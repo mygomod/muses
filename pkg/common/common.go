@@ -1,6 +1,10 @@
 package common
 
-import "time"
+import (
+	"github.com/goecology/muses/pkg/system"
+	"github.com/spf13/cobra"
+	"time"
+)
 
 type Caller interface {
 	// Init cfg returns parse cfg error.
@@ -20,3 +24,12 @@ func (d *Duration) UnmarshalText(text []byte) error {
 }
 
 type CallerFunc func() Caller
+
+type PreRunFunc func() error
+
+var CmdConfigPath string
+
+// RootCmd represents the base command when called without any subcommands
+var RootCmd = &cobra.Command{
+	Use: system.BuildInfo.Name,
+}
