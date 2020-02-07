@@ -7,18 +7,13 @@ import (
 )
 
 var startCmd *cobra.Command
-var startFn func(cmd *cobra.Command, args []string)
 
-func (c *callerStore) initStart() {
+func InitCommand(f func(cmd *cobra.Command, args []string)) {
 	startCmd = &cobra.Command{
 		Use:  "start",
 		Long: `Starts ` + system.BuildInfo.Name + ` server`,
-		Run:  startFn,
+		Run:  f,
 	}
 	startCmd.PersistentFlags().StringVarP(&common.CmdConfigPath, "conf", "c", "conf/conf.toml", "conf path")
 	common.RootCmd.AddCommand(startCmd)
-}
-
-func SetStartFn(f func(cmd *cobra.Command, args []string)) {
-	startFn = f
 }

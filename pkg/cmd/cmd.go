@@ -1,9 +1,7 @@
 package cmd
 
 import (
-	"fmt"
 	"github.com/goecology/muses/pkg/common"
-	"os"
 )
 
 var defaultCaller = &callerStore{
@@ -30,14 +28,11 @@ func Config() Cfg {
 }
 
 func (c *callerStore) InitCfg(cfg []byte) error {
-	c.initStart()
+	//c.initStart()
 	return nil
 }
 
 func (c *callerStore) InitCaller() error {
-	if err := common.RootCmd.Execute(); err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
+
 	return nil
 }

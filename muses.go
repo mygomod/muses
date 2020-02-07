@@ -22,14 +22,16 @@ import (
 )
 
 type Muses struct {
-	cfgByte     []byte
-	callers     []common.Caller
-	isSetConfig bool
-	filePath    string
-	preRun      []common.PreRunFunc
-	ext         string
-	err         error
-	router      func() *ogin.Engine
+	cfgByte       []byte
+	callers       []common.Caller
+	isSetConfig   bool
+	filePath      string
+	preRun        []common.PreRunFunc
+	ext           string
+	err           error
+	router        func() *ogin.Engine
+	isCmdRegister bool
+	isGinRegister bool
 }
 
 func Container(callerFuncs ...common.CallerFunc) (muses *Muses) {
@@ -42,9 +44,20 @@ func Container(callerFuncs ...common.CallerFunc) (muses *Muses) {
 		return
 	}
 	muses.callers = callers
+	for _, caller := range muses.callers {
+		name := getCallerName(caller)
+		// 说明启动cmd配置，那么就不需要在setConfig
+		if name == common.ModCmdName {
+			muses.isCmdRegister = true
+		}
+		if name == common.ModGinName {
+			muses.isGinRegister = true
+		}
+	}
 	// 初始化 启动信息
 	system.InitRunInfo()
 	muses.showVersion()
+
 	return
 }
 
@@ -52,36 +65,7 @@ func (m *Muses) SetRouter(router func() *ogin.Engine) *Muses {
 	if m.err != nil {
 		return m
 	}
-	var err error
 	m.router = router
-	cmd.SetStartFn(m.startFn)
-	for _, caller := range m.callers {
-		name := getCallerName(caller)
-		// 说明启动cmd配置，那么就不需要在setConfig
-		if name == common.ModCmdName {
-			// 启动配置选项
-			err = caller.InitCfg([]byte{})
-			if err != nil {
-				m.err = err
-				return m
-			}
-			m.filePath = common.CmdConfigPath
-			err = isPathExist(m.filePath)
-			if err != nil {
-				m.err = err
-				return m
-			}
-
-			ext := filepath.Ext(m.filePath)
-
-			if len(ext) <= 1 {
-				m.err = errors.New("config file ext is error")
-				return m
-			}
-			m.ext = ext[1:]
-			m.SetCfg(m.filePath)
-		}
-	}
 	return m
 }
 
@@ -118,43 +102,19 @@ func (m *Muses) PreRun(f ...common.PreRunFunc) *Muses {
 
 func (m *Muses) Run() (err error) {
 	fmt.Println(system.BuildInfo.LongForm())
-	if !m.isSetConfig {
-		err = errors.New("config file is not setting")
-		return
-	}
 
-	for _, caller := range m.callers {
-		name := getCallerName(caller)
-		// 说明是最后一个启动指令
-		if name == common.ModCmdName {
-			// 运行前置指令
-			for _, f := range m.preRun {
-				err = f()
-				if err != nil {
-					return
-				}
-			}
-			m.printInfo("module", name, "init caller start")
-			if err = caller.InitCaller(); err != nil {
-				m.printInfo("module", name, "init caller error")
-				return
-			}
-			m.printInfo("module", name, "init caller ok")
-		} else {
-			m.printInfo("module", name, "cfg start")
-			if err = caller.InitCfg(m.cfgByte); err != nil {
-				m.printInfo("module", name, "init config error")
-				return
-			}
-			m.printInfo("module", name, "cfg end")
-			m.printInfo("module", name, "init caller start")
-			if err = caller.InitCaller(); err != nil {
-				m.printInfo("module", name, "init caller error")
-				return
-			}
-			m.printInfo("module", name, "init caller ok")
+	if m.isCmdRegister {
+		cmd.InitCommand(m.startFn)
+		if err := common.RootCmd.Execute(); err != nil {
+			fmt.Println(err)
+			os.Exit(1)
 		}
-
+	} else {
+		if !m.isSetConfig {
+			err = errors.New("config is not exist")
+			return
+		}
+		m.mustRun()
 	}
 	return
 }
@@ -180,18 +140,70 @@ func isPathExist(path string) error {
 }
 
 func (m *Muses) startFn(cmd *cobra.Command, args []string) {
-	// 主服务器
-	endless.DefaultReadTimeOut = gin.Config().Muses.Server.Gin.ReadTimeout.Duration
-	endless.DefaultWriteTimeOut = gin.Config().Muses.Server.Gin.WriteTimeout.Duration
-	endless.DefaultMaxHeaderBytes = 100000000000000
-	server := endless.NewServer(gin.Config().Muses.Server.Gin.Addr, m.router())
-	server.BeforeBegin = func(add string) {
-		logger.DefaultLogger().Info(fmt.Sprintf("Actual pid is %d", syscall.Getpid()))
+	var err error
+
+	if m.isCmdRegister {
+		m.filePath = common.CmdConfigPath
+		err = isPathExist(m.filePath)
+		if err != nil {
+			m.err = err
+			return
+		}
+
+		ext := filepath.Ext(m.filePath)
+
+		if len(ext) <= 1 {
+			m.err = errors.New("config file ext is error")
+			return
+		}
+		m.ext = ext[1:]
+		m.SetCfg(m.filePath)
 	}
 
-	if err := server.ListenAndServe(); err != nil {
-		logger.DefaultLogger().Error("Server err", zap.String("err", err.Error()))
+	m.mustRun()
+
+	if m.isGinRegister {
+		// 主服务器
+		endless.DefaultReadTimeOut = gin.Config().Muses.Server.Gin.ReadTimeout.Duration
+		endless.DefaultWriteTimeOut = gin.Config().Muses.Server.Gin.WriteTimeout.Duration
+		endless.DefaultMaxHeaderBytes = 100000000000000
+		server := endless.NewServer(gin.Config().Muses.Server.Gin.Addr, m.router())
+		server.BeforeBegin = func(add string) {
+			logger.DefaultLogger().Info(fmt.Sprintf("Actual pid is %d", syscall.Getpid()))
+		}
+
+		if err := server.ListenAndServe(); err != nil {
+			logger.DefaultLogger().Error("Server err", zap.String("err", err.Error()))
+		}
 	}
+}
+
+func (m *Muses) mustRun() {
+	var err error
+	for _, caller := range m.callers {
+		name := getCallerName(caller)
+		m.printInfo("module", name, "cfg start")
+		if err = caller.InitCfg(m.cfgByte); err != nil {
+			m.printInfo("module", name, "init config error")
+			return
+		}
+		m.printInfo("module", name, "cfg end")
+		m.printInfo("module", name, "init caller start")
+		if err = caller.InitCaller(); err != nil {
+			m.printInfo("module", name, "init caller error")
+			return
+		}
+		m.printInfo("module", name, "init caller ok")
+	}
+
+	// 运行前置指令
+	for _, f := range m.preRun {
+		err = f()
+		if err != nil {
+			return
+		}
+	}
+	return
 }
 
 func isVersion() bool {
