@@ -8,11 +8,11 @@ import (
 
 var startCmd *cobra.Command
 
-func InitCommand(f func(cmd *cobra.Command, args []string)) {
+func InitCommand(f func(cmd *cobra.Command, args []string) error) {
 	startCmd = &cobra.Command{
 		Use:  "start",
 		Long: `Starts ` + system.BuildInfo.Name + ` server`,
-		Run:  f,
+		RunE: f,
 	}
 	startCmd.PersistentFlags().StringVarP(&common.CmdConfigPath, "conf", "c", "conf/conf.toml", "conf path")
 	common.RootCmd.AddCommand(startCmd)

@@ -34,6 +34,7 @@ type Muses struct {
 	isGinRegister bool
 }
 
+// 注册相应组件
 func Container(callerFuncs ...common.CallerFunc) (muses *Muses) {
 	allCallers := []common.CallerFunc{app.Register, logger.Register, prom.Register}
 	allCallers = append(allCallers, callerFuncs...)
@@ -44,6 +45,7 @@ func Container(callerFuncs ...common.CallerFunc) (muses *Muses) {
 		return
 	}
 	muses.callers = callers
+	// todo 后面变成map，判断是否存在这个组件
 	for _, caller := range muses.callers {
 		name := getCallerName(caller)
 		// 说明启动cmd配置，那么就不需要在setConfig
@@ -56,12 +58,11 @@ func Container(callerFuncs ...common.CallerFunc) (muses *Muses) {
 	}
 	// 初始化 启动信息
 	system.InitRunInfo()
-	muses.showVersion()
-
 	return
 }
 
-func (m *Muses) SetRouter(router func() *ogin.Engine) *Muses {
+// 设置gin路由
+func (m *Muses) SetGinRouter(router func() *ogin.Engine) *Muses {
 	if m.err != nil {
 		return m
 	}
@@ -69,6 +70,7 @@ func (m *Muses) SetRouter(router func() *ogin.Engine) *Muses {
 	return m
 }
 
+// 设置配置
 func (m *Muses) SetCfg(cfg interface{}) *Muses {
 	if m.err != nil {
 		return m
@@ -102,6 +104,9 @@ func (m *Muses) PreRun(f ...common.PreRunFunc) *Muses {
 
 func (m *Muses) Run() (err error) {
 	fmt.Println(system.BuildInfo.LongForm())
+	if m.err != nil {
+		return
+	}
 
 	if m.isCmdRegister {
 		cmd.InitCommand(m.startFn)
@@ -114,7 +119,7 @@ func (m *Muses) Run() (err error) {
 			err = errors.New("config is not exist")
 			return
 		}
-		m.mustRun()
+		err = m.mustRun()
 	}
 	return
 }
@@ -139,9 +144,8 @@ func isPathExist(path string) error {
 	return err
 }
 
-func (m *Muses) startFn(cmd *cobra.Command, args []string) {
-	var err error
-
+// 回调start函数
+func (m *Muses) startFn(cmd *cobra.Command, args []string) (err error) {
 	if m.isCmdRegister {
 		m.filePath = common.CmdConfigPath
 		err = isPathExist(m.filePath)
@@ -160,7 +164,10 @@ func (m *Muses) startFn(cmd *cobra.Command, args []string) {
 		m.SetCfg(m.filePath)
 	}
 
-	m.mustRun()
+	err = m.mustRun()
+	if err != nil {
+		return
+	}
 
 	if m.isGinRegister {
 		// 主服务器
@@ -176,10 +183,11 @@ func (m *Muses) startFn(cmd *cobra.Command, args []string) {
 			logger.DefaultLogger().Error("Server err", zap.String("err", err.Error()))
 		}
 	}
+	return
 }
 
-func (m *Muses) mustRun() {
-	var err error
+// 每个项目都必须执行的run
+func (m *Muses) mustRun() (err error) {
 	for _, caller := range m.callers {
 		name := getCallerName(caller)
 		m.printInfo("module", name, "cfg start")
@@ -206,26 +214,7 @@ func (m *Muses) mustRun() {
 	return
 }
 
-func isVersion() bool {
-	if len(os.Args) > 1 && "version" == os.Args[1] {
-		return true
-	}
-	return false
-}
-
-func (m *Muses) showVersion() {
-	if isVersion() {
-		for _, caller := range m.callers {
-			name := getCallerName(caller)
-			// 说明是最后一个启动指令
-			if name == common.ModCmdName {
-				_ = caller.InitCaller()
-				os.Exit(0)
-			}
-		}
-	}
-}
-
+// todo 高亮
 func (m *Muses) printInfo(info ...interface{}) {
 	fmt.Println(info)
 }
