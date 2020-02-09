@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/BurntSushi/toml"
 	"github.com/gin-gonic/gin"
+	"github.com/goecology/muses/pkg/cmd"
 	"github.com/goecology/muses/pkg/common"
 	"github.com/goecology/muses/pkg/logger"
 	"github.com/zsais/go-gin-prometheus"
@@ -37,8 +38,14 @@ func (c *callerStore) InitCfg(cfg []byte) error {
 }
 
 func (c *callerStore) InitCaller() error {
+	addr := c.cfg.Muses.Server.Stat.Addr
+	// 如果存在命令行的addr，覆盖配置里的addr
+	if cmd.StatAddr != "" {
+		addr = cmd.StatAddr
+	}
+
 	serverStats := &http.Server{
-		Addr:         c.cfg.Muses.Server.Stat.Addr,
+		Addr:         addr,
 		Handler:      initStat(),
 		ReadTimeout:  c.cfg.Muses.Server.Stat.ReadTimeout.Duration,
 		WriteTimeout: c.cfg.Muses.Server.Stat.WriteTimeout.Duration,
