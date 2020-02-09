@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/goecology/muses/pkg/common"
 	"github.com/goecology/muses/pkg/system"
 	"github.com/spf13/cobra"
 )
@@ -18,7 +17,7 @@ var versionCmd = &cobra.Command{
 
 func init() {
 	versionCmd.PersistentFlags().BoolVarP(&short, "short", "s", short, "Displays a short form of the version information")
-	common.RootCmd.AddCommand(versionCmd)
+	rootCmd.AddCommand(versionCmd)
 }
 
 func versionFn(cmd *cobra.Command, args []string) {

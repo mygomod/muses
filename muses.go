@@ -70,6 +70,14 @@ func (m *Muses) SetGinRouter(router func() *ogin.Engine) *Muses {
 	return m
 }
 
+func (m *Muses) SetRootCommand(f func(cobraCommand *cobra.Command)) {
+	f(cmd.GetRootCmd())
+}
+
+func (m *Muses) SetStartCommand(f func(cobraCommand *cobra.Command)) {
+	f(cmd.InitStartCommand(m.startFn))
+}
+
 // 设置配置
 func (m *Muses) SetCfg(cfg interface{}) *Muses {
 	if m.err != nil {
@@ -79,6 +87,21 @@ func (m *Muses) SetCfg(cfg interface{}) *Muses {
 	var cfgByte []byte
 	switch cfg.(type) {
 	case string:
+		m.filePath = cmd.ConfigPath
+		err = isPathExist(m.filePath)
+		if err != nil {
+			m.err = err
+			return m
+		}
+
+		ext := filepath.Ext(m.filePath)
+
+		if len(ext) <= 1 {
+			m.err = errors.New("config file ext is error")
+			return m
+		}
+		m.ext = ext[1:]
+
 		cfgByte, err = parseFile(cfg.(string))
 		if err != nil {
 			m.err = err
@@ -103,14 +126,15 @@ func (m *Muses) PreRun(f ...common.PreRunFunc) *Muses {
 }
 
 func (m *Muses) Run() (err error) {
-	fmt.Println(system.BuildInfo.LongForm())
 	if m.err != nil {
+		err = m.err
 		return
 	}
 
 	if m.isCmdRegister {
-		cmd.InitCommand(m.startFn)
-		if err := common.RootCmd.Execute(); err != nil {
+		cmd.InitStartCommand(m.startFn)
+		cmd.AddStartCommand()
+		if err := cmd.Execute(); err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
@@ -128,12 +152,11 @@ func (m *Muses) initViper() {
 	rBytes := bytes.NewReader(m.cfgByte)
 	viper.SetConfigType(m.ext)
 	viper.AutomaticEnv() // read in environment variables that match
-	//viper.Debug()
 	err := viper.ReadConfig(rBytes)
 	if err != nil {
 		m.printInfo("Using config file:", viper.ConfigFileUsed())
 	}
-
+	viper.Debug()
 }
 
 func isPathExist(path string) error {
@@ -145,23 +168,14 @@ func isPathExist(path string) error {
 }
 
 // 回调start函数
-func (m *Muses) startFn(cmd *cobra.Command, args []string) (err error) {
+func (m *Muses) startFn(cobraCommand *cobra.Command, args []string) (err error) {
+	fmt.Println(system.BuildInfo.LongForm())
 	if m.isCmdRegister {
-		m.filePath = common.CmdConfigPath
-		err = isPathExist(m.filePath)
-		if err != nil {
-			m.err = err
+		m.SetCfg(cmd.ConfigPath)
+		if m.err != nil {
+			err = m.err
 			return
 		}
-
-		ext := filepath.Ext(m.filePath)
-
-		if len(ext) <= 1 {
-			m.err = errors.New("config file ext is error")
-			return
-		}
-		m.ext = ext[1:]
-		m.SetCfg(m.filePath)
 	}
 
 	err = m.mustRun()
@@ -170,12 +184,18 @@ func (m *Muses) startFn(cmd *cobra.Command, args []string) (err error) {
 	}
 
 	if m.isGinRegister {
+		addr := gin.Config().Muses.Server.Gin.Addr
+		// 如果存在命令行的addr，覆盖配置里的addr
+		if cmd.Addr != "" {
+			addr = cmd.Addr
+		}
 		// 主服务器
 		endless.DefaultReadTimeOut = gin.Config().Muses.Server.Gin.ReadTimeout.Duration
 		endless.DefaultWriteTimeOut = gin.Config().Muses.Server.Gin.WriteTimeout.Duration
 		endless.DefaultMaxHeaderBytes = 100000000000000
-		server := endless.NewServer(gin.Config().Muses.Server.Gin.Addr, m.router())
-		server.BeforeBegin = func(add string) {
+		server := endless.NewServer(addr, m.router())
+		server.BeforeBegin = func(addr string) {
+			logger.DefaultLogger().Info(fmt.Sprintf("Addr is %s", addr))
 			logger.DefaultLogger().Info(fmt.Sprintf("Actual pid is %d", syscall.Getpid()))
 		}
 

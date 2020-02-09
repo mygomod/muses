@@ -1,8 +1,6 @@
 package common
 
 import (
-	"github.com/goecology/muses/pkg/system"
-	"github.com/spf13/cobra"
 	"time"
 )
 
@@ -26,10 +24,3 @@ func (d *Duration) UnmarshalText(text []byte) error {
 type CallerFunc func() Caller
 
 type PreRunFunc func() error
-
-var CmdConfigPath string
-
-// RootCmd represents the base command when called without any subcommands
-var RootCmd = &cobra.Command{
-	Use: system.BuildInfo.Name,
-}

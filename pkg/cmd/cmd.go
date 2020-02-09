@@ -2,7 +2,14 @@ package cmd
 
 import (
 	"github.com/goecology/muses/pkg/common"
+	"github.com/goecology/muses/pkg/system"
+	"github.com/spf13/cobra"
 )
+
+// rootCmd represents the base command when called without any subcommands
+var rootCmd = &cobra.Command{
+	Use: system.BuildInfo.Name,
+}
 
 var defaultCaller = &callerStore{
 	Name:        common.ModCmdName,
@@ -28,11 +35,17 @@ func Config() Cfg {
 }
 
 func (c *callerStore) InitCfg(cfg []byte) error {
-	//c.initStart()
 	return nil
 }
 
 func (c *callerStore) InitCaller() error {
-
 	return nil
+}
+
+func Execute() error {
+	return rootCmd.Execute()
+}
+
+func GetRootCmd() *cobra.Command {
+	return rootCmd
 }

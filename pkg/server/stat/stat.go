@@ -1,6 +1,7 @@
 package stat
 
 import (
+	"fmt"
 	"github.com/BurntSushi/toml"
 	"github.com/gin-gonic/gin"
 	"github.com/goecology/muses/pkg/common"
@@ -48,6 +49,7 @@ func (c *callerStore) InitCaller() error {
 			serverStats.Close()
 		}()
 		if err := serverStats.ListenAndServe(); err != nil {
+			fmt.Println("err", c.cfg.Muses.Server)
 			logger.DefaultLogger().Error("ServerApi err", zap.String("err", err.Error()))
 		}
 	}()
