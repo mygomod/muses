@@ -9,6 +9,8 @@ type Cfg struct {
 }
 
 type CallerCfg struct {
+	Mode string // redis,memstore
+
 	Name     string
 	Size     int
 	Network  string

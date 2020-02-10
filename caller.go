@@ -12,6 +12,7 @@ var orderCallerList = []callerAttr{
 	{common.ModLoggerName},
 	{common.ModPromName},
 	{common.ModMysqlName},
+	{common.ModOssName},
 	{common.ModRedisName},
 	{common.ModMongoName},
 	{common.ModGinSessionName},

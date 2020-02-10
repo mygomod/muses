@@ -3,9 +3,11 @@ package ginsession
 import (
 	"github.com/BurntSushi/toml"
 	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/memstore"
 	"github.com/gin-contrib/sessions/redis"
 	"github.com/gin-gonic/gin"
 	"github.com/goecology/muses/pkg/common"
+	"github.com/pkg/errors"
 )
 
 var defaultCaller = &callerStore{
@@ -45,11 +47,19 @@ func (c *callerStore) InitCaller() error {
 }
 
 func provider(cfg CallerCfg) (session gin.HandlerFunc, err error) {
-	var store redis.Store
-	store, err = redis.NewStore(cfg.Size, cfg.Network, cfg.Addr, cfg.Pwd, []byte(cfg.Keypairs))
-	if err != nil {
+	if cfg.Mode == "redis" {
+		var store redis.Store
+		store, err = redis.NewStore(cfg.Size, cfg.Network, cfg.Addr, cfg.Pwd, []byte(cfg.Keypairs))
+		if err != nil {
+			return
+		}
+		session = sessions.Sessions(cfg.Name, store)
+	} else if cfg.Mode == "memstore" {
+		store := memstore.NewStore([]byte(cfg.Keypairs))
+		session = sessions.Sessions(cfg.Name, store)
+	} else {
+		err = errors.New("gin session mode not exist")
 		return
 	}
-	session = sessions.Sessions(cfg.Name, store)
 	return
 }
