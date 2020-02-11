@@ -1,6 +1,8 @@
 package main
 
 import (
+	"github.com/jinzhu/gorm"
+
 	"github.com/goecology/muses"
 	"github.com/goecology/muses/pkg/database/mysql"
 	"github.com/goecology/muses/pkg/logger"
@@ -28,7 +30,7 @@ var cfg = `
 
 `
 var (
-	Db *mysql.Client
+	Db *gorm.DB
 )
 
 func main() {
