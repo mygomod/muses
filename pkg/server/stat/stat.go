@@ -2,14 +2,18 @@ package stat
 
 import (
 	"fmt"
+	"net/http"
+
 	"github.com/BurntSushi/toml"
 	"github.com/gin-gonic/gin"
+
 	"github.com/goecology/muses/pkg/cmd"
 	"github.com/goecology/muses/pkg/common"
 	"github.com/goecology/muses/pkg/logger"
+	"github.com/goecology/muses/pkg/registry"
+
 	"github.com/zsais/go-gin-prometheus"
 	"go.uber.org/zap"
-	"net/http"
 )
 
 var defaultCaller = &callerStore{
@@ -61,7 +65,12 @@ func (c *callerStore) InitCaller() error {
 		}
 	}()
 	c.caller = &Client{serverStats}
-
+	// registry the ServerStatAddr
+	err := registry.RegisterServerStatAddr(addr)
+	if err != nil {
+		logger.DefaultLogger().Error("Registry server state address failed, err",
+			zap.String("err", err.Error()))
+	}
 	return nil
 }
 
