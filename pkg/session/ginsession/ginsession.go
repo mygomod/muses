@@ -54,7 +54,7 @@ func provider(cfg CallerCfg) (session gin.HandlerFunc, err error) {
 			return
 		}
 		session = sessions.Sessions(cfg.Name, store)
-	} else if cfg.Mode == "memstore" {
+	} else if cfg.Mode == "memory" {
 		store := memstore.NewStore([]byte(cfg.Keypairs))
 		session = sessions.Sessions(cfg.Name, store)
 	} else {
