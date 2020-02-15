@@ -27,6 +27,7 @@ type Muses struct {
 	isSetConfig   bool
 	filePath      string
 	preRun        []common.PreRunFunc
+	postRun       []common.PostRunFunc
 	ext           string
 	err           error
 	router        func() *ogin.Engine
@@ -67,6 +68,18 @@ func (m *Muses) SetGinRouter(router func() *ogin.Engine) *Muses {
 		return m
 	}
 	m.router = router
+	return m
+}
+
+// 在container之前运行
+func (m *Muses) SetPreRun(f ...common.PreRunFunc) *Muses {
+	m.preRun = f
+	return m
+}
+
+// 在container之后运行
+func (m *Muses) SetPostRun(f ...common.PostRunFunc) *Muses {
+	m.postRun = f
 	return m
 }
 
@@ -117,11 +130,6 @@ func (m *Muses) SetCfg(cfg interface{}) *Muses {
 	m.cfgByte = cfgByte
 	m.isSetConfig = true
 	m.initViper()
-	return m
-}
-
-func (m *Muses) PreRun(f ...common.PreRunFunc) *Muses {
-	m.preRun = f
 	return m
 }
 
@@ -208,6 +216,13 @@ func (m *Muses) startFn(cobraCommand *cobra.Command, args []string) (err error) 
 
 // 每个项目都必须执行的run
 func (m *Muses) mustRun() (err error) {
+	// 运行前置指令
+	for _, f := range m.preRun {
+		err = f()
+		if err != nil {
+			return
+		}
+	}
 	for _, caller := range m.callers {
 		name := getCallerName(caller)
 		m.printInfo("module", name, "cfg start")
@@ -224,13 +239,14 @@ func (m *Muses) mustRun() (err error) {
 		m.printInfo("module", name, "init caller ok")
 	}
 
-	// 运行前置指令
-	for _, f := range m.preRun {
+	// 运行后置指令
+	for _, f := range m.postRun {
 		err = f()
 		if err != nil {
 			return
 		}
 	}
+
 	return
 }
 

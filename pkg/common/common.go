@@ -24,3 +24,5 @@ func (d *Duration) UnmarshalText(text []byte) error {
 type CallerFunc func() Caller
 
 type PreRunFunc func() error
+
+type PostRunFunc func() error

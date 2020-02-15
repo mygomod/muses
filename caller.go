@@ -9,6 +9,7 @@ import (
 // 通过反射取包里面的值
 var orderCallerList = []callerAttr{
 	{common.ModAppName},
+	{common.ModEtcdName},
 	{common.ModLoggerName},
 	{common.ModPromName},
 	{common.ModMysqlName},

@@ -58,12 +58,17 @@ func (c *Client) GetObjectToFile(dstPath, srcPath string, options ...standard.Op
 	panic("implement me")
 }
 
-func (c *Client) DeleteObject(dstPath string) error {
-	panic("implement me")
+func (c *Client) DeleteObject(dstPath string) (err error) {
+	err = c.b.DeleteObject(dstPath)
+	if err != nil {
+		return
+	}
+	return
 }
 
 func (c *Client) DeleteObjects(dstPaths []string, options ...standard.Option) (standard.DeleteObjectsResult, error) {
 	panic("implement me")
+
 }
 
 func (c *Client) IsObjectExist(dstPath string) (bool, error) {

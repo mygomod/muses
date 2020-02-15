@@ -10,7 +10,7 @@ import (
 )
 
 var defaultCaller = &callerStore{
-	Name: common.ModEtcd,
+	Name: common.ModEtcdName,
 }
 
 type callerStore struct {

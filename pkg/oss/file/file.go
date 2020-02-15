@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 type Client struct {
@@ -60,8 +61,9 @@ func (c *Client) GetObjectToFile(dstPath, srcPath string, options ...standard.Op
 	panic("implement me")
 }
 
-func (c *Client) DeleteObject(dstPath string) error {
-	panic("implement me")
+func (c *Client) DeleteObject(dstPath string) (err error) {
+	err = os.Remove(strings.TrimLeft(dstPath, "/"))
+	return
 }
 
 func (c *Client) DeleteObjects(dstPaths []string, options ...standard.Option) (standard.DeleteObjectsResult, error) {
