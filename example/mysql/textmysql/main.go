@@ -1,15 +1,12 @@
 package main
 
 import (
-	"github.com/jinzhu/gorm"
-
 	"github.com/goecology/muses"
 	"github.com/goecology/muses/pkg/database/mysql"
-	"github.com/goecology/muses/pkg/logger"
 )
 
 var cfg = `
-[muses.mysql.default]
+[muses.mysql.ecology]
     debug = true
     level = "panic"
     network = "tcp"
@@ -17,7 +14,7 @@ var cfg = `
     addr = "127.0.0.1:3306"
     username = "root"
     password = "root"
-    db = "shop"
+    db = "ecology"
     charset = "utf8"
     parseTime = "True"
     loc = "Local"
@@ -29,28 +26,22 @@ var cfg = `
     connMaxLifetime = "300s"
 
 `
-var (
-	Db *gorm.DB
-)
 
-func main() {
-	if err := muses.Container(
-		[]byte(cfg),
-		mysql.Register,
-		logger.Register,
-	); err != nil {
-		panic(err)
-	}
-
-	initCaller()
-	type User struct {
-		Uid  int
-		Name string
-	}
-	u := User{}
-	Db.Table("user").Where("uid=?", 1).Find(&u)
+type User struct {
+	MemberId int
 }
 
-func initCaller() {
-	Db = mysql.Caller("default")
+func main() {
+	app := muses.Container(
+		mysql.Register,
+	)
+	app.SetCfg([]byte(cfg))
+	err := app.Run()
+	if err != nil {
+		panic(err)
+	}
+	u := User{}
+	if mysql.Caller("ecology") != nil {
+		mysql.Caller("ecology").Table("member").Where("member_id=?", 1).Find(&u)
+	}
 }

@@ -164,7 +164,7 @@ func (m *Muses) initViper() {
 	if err != nil {
 		m.printInfo("Using config file:", viper.ConfigFileUsed())
 	}
-	viper.Debug()
+	//viper.Debug()
 }
 
 func isPathExist(path string) error {
