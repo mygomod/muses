@@ -35,6 +35,17 @@ type Muses struct {
 	isGinRegister bool
 }
 
+var (
+	MUSES_DEBUG = false
+)
+
+// 初始化环境变量，方便调试
+func init() {
+	if os.Getenv("MUSES_DEBUG") == "true" {
+		MUSES_DEBUG = true
+	}
+}
+
 // 注册相应组件
 func Container(callerFuncs ...common.CallerFunc) (muses *Muses) {
 	allCallers := []common.CallerFunc{app.Register, logger.Register, prom.Register}
@@ -178,6 +189,7 @@ func isPathExist(path string) error {
 // 回调start函数
 func (m *Muses) startFn(cobraCommand *cobra.Command, args []string) (err error) {
 	fmt.Println(system.BuildInfo.LongForm())
+
 	if m.isCmdRegister {
 		m.SetCfg(cmd.ConfigPath)
 		if m.err != nil {
@@ -252,5 +264,7 @@ func (m *Muses) mustRun() (err error) {
 
 // todo 高亮
 func (m *Muses) printInfo(info ...interface{}) {
-	fmt.Println(info)
+	if MUSES_DEBUG {
+		fmt.Println(info)
+	}
 }

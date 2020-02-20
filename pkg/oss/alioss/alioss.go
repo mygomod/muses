@@ -4,6 +4,7 @@ import (
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 	"github.com/goecology/muses/pkg/oss/standard"
 	"io"
+	"io/ioutil"
 	"os"
 )
 
@@ -50,8 +51,10 @@ func (c *Client) PutObjectFromFile(dstPath, srcPath string, options ...standard.
 
 }
 
-func (c *Client) GetObject(dstPath string, options ...standard.Option) (io.ReadCloser, error) {
-	panic("implement me")
+func (c *Client) GetObject(dstPath string, options ...standard.Option) (ouput []byte, err error) {
+	var reader io.ReadCloser
+	reader, err = c.b.GetObject(dstPath)
+	return ioutil.ReadAll(reader)
 }
 
 func (c *Client) GetObjectToFile(dstPath, srcPath string, options ...standard.Option) error {
@@ -66,9 +69,18 @@ func (c *Client) DeleteObject(dstPath string) (err error) {
 	return
 }
 
-func (c *Client) DeleteObjects(dstPaths []string, options ...standard.Option) (standard.DeleteObjectsResult, error) {
-	panic("implement me")
-
+func (c *Client) DeleteObjects(dstPaths []string, options ...standard.Option) (output standard.DeleteObjectsResult, err error) {
+	var resp oss.DeleteObjectsResult
+	resp, err = c.b.DeleteObjects(dstPaths)
+	if err != nil {
+		return
+	}
+	output = standard.DeleteObjectsResult{
+		Local:          resp.XMLName.Local,
+		Space:          resp.XMLName.Space,
+		DeletedObjects: resp.DeletedObjects,
+	}
+	return
 }
 
 func (c *Client) IsObjectExist(dstPath string) (bool, error) {

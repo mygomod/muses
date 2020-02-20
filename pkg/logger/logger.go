@@ -55,6 +55,11 @@ func DefaultLogger() *Client {
 	} else {
 		logClient = obj.(*Client)
 	}
+
+	// 如果log client 不存在，提示用户配置里需要设置日志配置
+	if logClient == nil {
+		panic("please set logger config")
+	}
 	return logClient
 }
 

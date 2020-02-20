@@ -1,6 +1,7 @@
 package file
 
 import (
+	"errors"
 	"github.com/goecology/muses/pkg/oss/standard"
 	"io"
 	"io/ioutil"
@@ -24,8 +25,12 @@ func NewOss(cdnName string, bucket string, isDelete bool) (client standard.Oss, 
 	return
 }
 
-func (Client) PutObject(dstPath string, reader io.Reader, options ...standard.Option) error {
-	panic("implement me")
+func (c *Client) PutObject(dstPath string, reader io.Reader, options ...standard.Option) error {
+	fileByte, err := ioutil.ReadAll(reader)
+	if err != nil {
+		return err
+	}
+	return ioutil.WriteFile(dstPath, fileByte, os.ModePerm)
 }
 
 func (c *Client) PutObjectFromFile(dstPath, srcPath string, options ...standard.Option) (err error) {
@@ -53,8 +58,8 @@ func (c *Client) PutObjectFromFile(dstPath, srcPath string, options ...standard.
 	return
 }
 
-func (c *Client) GetObject(dstPath string, options ...standard.Option) (io.ReadCloser, error) {
-	panic("implement me")
+func (c *Client) GetObject(dstPath string, options ...standard.Option) (output []byte, err error) {
+	return ioutil.ReadFile(dstPath)
 }
 
 func (c *Client) GetObjectToFile(dstPath, srcPath string, options ...standard.Option) error {
@@ -66,8 +71,18 @@ func (c *Client) DeleteObject(dstPath string) (err error) {
 	return
 }
 
-func (c *Client) DeleteObjects(dstPaths []string, options ...standard.Option) (standard.DeleteObjectsResult, error) {
-	panic("implement me")
+func (c *Client) DeleteObjects(dstPaths []string, options ...standard.Option) (output standard.DeleteObjectsResult, err error) {
+	for _, filePath := range dstPaths {
+		err1 := os.Remove(filePath)
+		if err1 != nil {
+			if err != nil {
+				err = errors.New(err.Error() + ", err is " + err1.Error())
+			} else {
+				err = err1
+			}
+		}
+	}
+	return
 }
 
 func (c *Client) IsObjectExist(dstPath string) (bool, error) {
