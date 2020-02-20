@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/goecology/muses"
-	"github.com/goecology/muses/pkg/database/mysql"
+	"github.com/i2eco/muses"
+	"github.com/i2eco/muses/pkg/database/mysql"
 )
 
 var cfg = `

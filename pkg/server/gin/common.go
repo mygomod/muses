@@ -1,6 +1,6 @@
 package gin
 
-import "github.com/goecology/muses/pkg/common"
+import "github.com/i2eco/muses/pkg/common"
 
 type Cfg struct {
 	Muses struct {

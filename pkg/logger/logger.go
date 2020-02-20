@@ -6,7 +6,7 @@ import (
 	"log"
 	"sync"
 
-	"github.com/goecology/muses/pkg/common"
+	"github.com/i2eco/muses/pkg/common"
 
 	"github.com/BurntSushi/toml"
 	"go.uber.org/zap"

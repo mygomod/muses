@@ -4,12 +4,12 @@ import (
 	"errors"
 	"fmt"
 	"github.com/BurntSushi/toml"
-	"github.com/goecology/muses/pkg/cache/mixcache/gocache"
-	"github.com/goecology/muses/pkg/cache/mixcache/leveldb"
-	mredis "github.com/goecology/muses/pkg/cache/mixcache/redis"
-	"github.com/goecology/muses/pkg/cache/mixcache/standard"
-	"github.com/goecology/muses/pkg/common"
 	"github.com/gomodule/redigo/redis"
+	"github.com/i2eco/muses/pkg/cache/mixcache/gocache"
+	"github.com/i2eco/muses/pkg/cache/mixcache/leveldb"
+	mredis "github.com/i2eco/muses/pkg/cache/mixcache/redis"
+	"github.com/i2eco/muses/pkg/cache/mixcache/standard"
+	"github.com/i2eco/muses/pkg/common"
 	"sync"
 )
 

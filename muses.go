@@ -6,13 +6,13 @@ import (
 	"fmt"
 	"github.com/fvbock/endless"
 	ogin "github.com/gin-gonic/gin"
-	"github.com/goecology/muses/pkg/app"
-	"github.com/goecology/muses/pkg/cmd"
-	"github.com/goecology/muses/pkg/common"
-	"github.com/goecology/muses/pkg/logger"
-	"github.com/goecology/muses/pkg/prom"
-	"github.com/goecology/muses/pkg/server/gin"
-	"github.com/goecology/muses/pkg/system"
+	"github.com/i2eco/muses/pkg/app"
+	"github.com/i2eco/muses/pkg/cmd"
+	"github.com/i2eco/muses/pkg/common"
+	"github.com/i2eco/muses/pkg/logger"
+	"github.com/i2eco/muses/pkg/prom"
+	"github.com/i2eco/muses/pkg/server/gin"
+	"github.com/i2eco/muses/pkg/system"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
@@ -209,6 +209,7 @@ func (m *Muses) startFn(cobraCommand *cobra.Command, args []string) (err error) 
 		if cmd.Addr != "" {
 			addr = cmd.Addr
 		}
+
 		// 主服务器
 		endless.DefaultReadTimeOut = gin.Config().Muses.Server.Gin.ReadTimeout.Duration
 		endless.DefaultWriteTimeOut = gin.Config().Muses.Server.Gin.WriteTimeout.Duration

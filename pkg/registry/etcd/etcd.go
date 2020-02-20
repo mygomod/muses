@@ -6,7 +6,7 @@ import (
 	"github.com/BurntSushi/toml"
 	"github.com/coreos/etcd/clientv3"
 
-	"github.com/goecology/muses/pkg/common"
+	"github.com/i2eco/muses/pkg/common"
 )
 
 var defaultCaller = &callerStore{

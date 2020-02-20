@@ -1,18 +1,18 @@
 package prom
 
 import (
+	"github.com/i2eco/muses/pkg/app"
+	"github.com/i2eco/muses/pkg/common"
 	"github.com/prometheus/client_golang/prometheus"
-	"github.com/goecology/muses/pkg/app"
-	"github.com/goecology/muses/pkg/common"
 )
 
 var (
 	// HTTPServer for http server
-	HTTPServerTimer = NewPromTimer("goecology_http_server", []string{"app", "env", "method"})
+	HTTPServerTimer = NewPromTimer("i2eco_http_server", []string{"app", "env", "method"})
 
-	HTTPServerCounter = NewPromCounter("goecology_http_server_code", []string{"app", "env", "method", "code"})
+	HTTPServerCounter = NewPromCounter("i2eco_http_server_code", []string{"app", "env", "method", "code"})
 
-	AppBuildInfo = NewPromCounter("goecology_app_build_info", []string{"app", "env", "version"})
+	AppBuildInfo = NewPromCounter("i2eco_app_build_info", []string{"app", "env", "version"})
 )
 
 // toodo prometheus也要初始化

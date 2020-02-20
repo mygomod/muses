@@ -2,8 +2,8 @@ package redis
 
 import (
 	"encoding/json"
-	"github.com/goecology/muses/pkg/cache/mixcache/standard"
 	"github.com/gomodule/redigo/redis"
+	"github.com/i2eco/muses/pkg/cache/mixcache/standard"
 	"log"
 	"os"
 	"time"

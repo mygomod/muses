@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/goecology/muses"
-	"github.com/goecology/muses/pkg/tpl/tplbeego"
+	"github.com/i2eco/muses"
+	"github.com/i2eco/muses/pkg/tpl/tplbeego"
 )
 
 var cfg = `
@@ -23,7 +23,7 @@ func main() {
 		fmt.Println("err", err)
 		return
 	}
-	obj.Data["hello"] = "hello goecology"
+	obj.Data["hello"] = "hello i2eco"
 	output, err := obj.RenderBytes()
 	if err != nil {
 		fmt.Println("err", err)

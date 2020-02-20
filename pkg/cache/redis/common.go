@@ -1,7 +1,7 @@
 package redis
 
 import (
-	"github.com/goecology/muses/pkg/common"
+	"github.com/i2eco/muses/pkg/common"
 )
 
 type Cfg struct {
