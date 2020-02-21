@@ -6,8 +6,8 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
+// TODO(两个都从配置里面读取)
 const AccessTokenIss = "github.com/goecology/egoshop"
-
 const AccessTokenKey = "ecologysK#xo"
 
 type JwtTokenAccessor struct {

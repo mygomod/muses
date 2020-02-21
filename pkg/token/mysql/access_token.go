@@ -1,5 +1,6 @@
 package mysql
 
+// TODO(从配置里面读取)
 const TableName = "access_token"
 
 type AccessToken struct {

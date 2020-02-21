@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// TODO(从配置中读取)
 const AccessTokenExpireInterval = 7 * 24 * 60 * 60
 
 type AccessTokenTicket struct {
