@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/jinzhu/gorm"
 	"github.com/goecology/muses"
 	"github.com/goecology/muses/pkg/app"
 	"github.com/goecology/muses/pkg/cache/redis"
@@ -11,6 +10,7 @@ import (
 	"github.com/goecology/muses/pkg/server/gin"
 	"github.com/goecology/muses/pkg/server/stat"
 	"github.com/goecology/muses/pkg/session/ginsession"
+	"github.com/jinzhu/gorm"
 )
 
 var cfg = `

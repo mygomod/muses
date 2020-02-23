@@ -1,9 +1,9 @@
 package prom
 
 import (
-	"github.com/prometheus/client_golang/prometheus"
 	"github.com/goecology/muses/pkg/app"
 	"github.com/goecology/muses/pkg/common"
+	"github.com/prometheus/client_golang/prometheus"
 )
 
 var (

@@ -1,0 +1,125 @@
+package token
+
+import (
+	"errors"
+	"sync"
+
+	"github.com/BurntSushi/toml"
+	"github.com/jinzhu/gorm"
+
+	"github.com/goecology/muses/pkg/cache/redis"
+	"github.com/goecology/muses/pkg/common"
+	"github.com/goecology/muses/pkg/database/mysql"
+	"github.com/goecology/muses/pkg/logger"
+	mysqlToken "github.com/goecology/muses/pkg/token/mysql"
+	redis2 "github.com/goecology/muses/pkg/token/redis"
+	"github.com/goecology/muses/pkg/token/standard"
+)
+
+var defaultCallerStore = &callerStore{
+	Name: common.ModTokenName,
+}
+
+type callerStore struct {
+	Name   string
+	caller sync.Map
+	cfg    Cfg
+}
+
+type Client struct {
+	standard.TokenAccessor
+	cfg CallerCfg
+}
+
+// func (client *Client) CreateAccessToken(c *gin.Context, uid int, startTime int64) (resp standard.AccessTokenTicket, err error) {
+// 	return client.delegate.CreateAccessToken(c, uid, startTime)
+// }
+//
+// func (client *Client) CheckAccessToken(c *gin.Context, tokenStr string) bool {
+// 	panic("implement me")
+// }
+//
+// func (client *Client) RefreshAccessToken(c *gin.Context, tokenStr string, startTime int64) (resp standard.AccessTokenTicket, err error) {
+// 	panic("implement me")
+// }
+//
+// func (client *Client) DecodeAccessToken(tokenStr string) (resp map[string]interface{}, err error) {
+// 	panic("implement me")
+// }
+
+func Register() common.Caller {
+	return defaultCallerStore
+}
+
+func Caller(name string) *Client {
+	obj, ok := defaultCallerStore.caller.Load(name)
+	if !ok {
+		return nil
+	}
+	return obj.(*Client)
+}
+
+func (c *callerStore) InitCfg(cfg []byte) error {
+	if err := toml.Unmarshal(cfg, &c.cfg); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *callerStore) InitCaller() error {
+	for name, cfg := range c.cfg.Muses.Token {
+		accessor, err := provider(cfg)
+		if err != nil {
+			return err
+		}
+		c := &Client{
+			accessor,
+			cfg,
+		}
+		defaultCallerStore.caller.Store(name, c)
+	}
+	return nil
+}
+
+func provider(cfg CallerCfg) (client standard.TokenAccessor, err error) {
+	var loggerClient *logger.Client
+
+	// 如果没有引用的logger，就创建一个
+	if len(cfg.LoggerRef) > 0 {
+		loggerClient = logger.Caller(cfg.LoggerRef)
+	} else {
+		loggerClient = logger.Provider(logger.CallerCfg(cfg.LoggerCallerCfg))
+	}
+
+	if cfg.Mode == "mysql" {
+		return createMysqlAccessor(cfg, loggerClient)
+	} else if cfg.Mode == "redis" {
+		return createRedisAccessor(cfg, loggerClient)
+	} else {
+		return nil, errors.New("The token's mode must be redis or mysql: " + cfg.Mode)
+	}
+}
+
+func createMysqlAccessor(cfg CallerCfg, loggerClient *logger.Client) (accessor standard.TokenAccessor, err error) {
+	var db *gorm.DB
+	if len(cfg.MysqlRef) > 0 {
+		db = mysql.Caller(cfg.MysqlRef)
+	} else {
+		db, err = mysql.Provider(mysql.CallerCfg(cfg.MysqlCallerCfg))
+		if err != nil {
+			return
+		}
+	}
+	return mysqlToken.InitTokenAccessor(loggerClient, db), nil
+}
+
+func createRedisAccessor(cfg CallerCfg, loggerClient *logger.Client) (standard.TokenAccessor, error) {
+	var redisClient *redis.Client
+	if len(cfg.RedisRef) > 0 {
+		redisClient = redis.Caller(cfg.RedisRef)
+	} else {
+		redisClient = redis.Provider(redis.CallerCfg(cfg.RedisCallerCfg))
+	}
+
+	return redis2.InitRedisTokenAccessor(loggerClient, redisClient), nil
+}

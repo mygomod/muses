@@ -41,7 +41,7 @@ func (c *callerStore) InitCfg(cfg []byte) error {
 
 func (c *callerStore) InitCaller() error {
 	for name, cfg := range c.cfg.Muses.Mysql {
-		db, err := provider(cfg)
+		db, err := Provider(cfg)
 		if err != nil {
 			return err
 		}
@@ -50,7 +50,7 @@ func (c *callerStore) InitCaller() error {
 	return nil
 }
 
-func provider(cfg CallerCfg) (resp *gorm.DB, err error) {
+func Provider(cfg CallerCfg) (resp *gorm.DB, err error) {
 	var db *gorm.DB
 	// dsn = "username:password@tcp(addr)/stt_config?charset=utf8&parseTime=True&loc=Local&readTimeout=1s&timeout=1s&writeTimeout=1s"
 	db, err = gorm.Open(cfg.Dialect, cfg.Username+":"+cfg.Password+"@"+cfg.Network+"("+cfg.Addr+")/"+cfg.Db+

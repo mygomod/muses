@@ -7,7 +7,7 @@ import (
 	"github.com/jinzhu/gorm"
 
 	"github.com/goecology/muses/pkg/logger"
-	"github.com/goecology/muses/pkg/token"
+	"github.com/goecology/muses/pkg/token/standard"
 
 	"go.uber.org/zap"
 )
@@ -21,26 +21,26 @@ import (
 //    logger = "system"
 //    client = "default"
 // 而后将Register()方法注册进去muses.Container(...)中
-type tokenAccessor struct {
-	token.JwtTokenAccessor
+type mysqlTokenAccessor struct {
+	standard.JwtTokenAccessor
 	logger *logger.Client
 	db     *gorm.DB
 }
 
-func initTokenAccessor(logger *logger.Client, db *gorm.DB) token.TokenAccessor {
-	return &tokenAccessor{
-		JwtTokenAccessor: token.JwtTokenAccessor{},
+func InitTokenAccessor(logger *logger.Client, db *gorm.DB) standard.TokenAccessor {
+	return &mysqlTokenAccessor{
+		JwtTokenAccessor: standard.JwtTokenAccessor{},
 		logger:           logger,
 		db:               db,
 	}
 }
 
-func (accessor *tokenAccessor) CreateAccessToken(c *gin.Context, uid int, startTime int64) (resp token.AccessTokenTicket, err error) {
+func (accessor *mysqlTokenAccessor) CreateAccessToken(c *gin.Context, uid int, startTime int64) (resp standard.AccessTokenTicket, err error) {
 	AccessTokenData := &AccessToken{
 		Jti:        0,
 		Sub:        uid,
 		IaTime:     startTime,
-		ExpTime:    startTime + token.AccessTokenExpireInterval,
+		ExpTime:    startTime + standard.AccessTokenExpireInterval,
 		Ip:         "",
 		CreateTime: time.Now().Unix(),
 		IsLogout:   0,
@@ -53,11 +53,11 @@ func (accessor *tokenAccessor) CreateAccessToken(c *gin.Context, uid int, startT
 		return
 	}
 	resp.AccessToken = tokenString
-	resp.ExpiresIn = token.AccessTokenExpireInterval
+	resp.ExpiresIn = standard.AccessTokenExpireInterval
 	return
 }
 
-func (accessor *tokenAccessor) CheckAccessToken(c *gin.Context, tokenStr string) bool {
+func (accessor *mysqlTokenAccessor) CheckAccessToken(c *gin.Context, tokenStr string) bool {
 	sc, err := accessor.DecodeAccessToken(tokenStr)
 	if err != nil {
 		accessor.logger.Error("access_token CheckAccessToken error1", zap.String("err", err.Error()))
@@ -71,7 +71,7 @@ func (accessor *tokenAccessor) CheckAccessToken(c *gin.Context, tokenStr string)
 	return true
 }
 
-func (accessor *tokenAccessor) RefreshAccessToken(c *gin.Context, tokenStr string, startTime int64) (resp token.AccessTokenTicket, err error) {
+func (accessor *mysqlTokenAccessor) RefreshAccessToken(c *gin.Context, tokenStr string, startTime int64) (resp standard.AccessTokenTicket, err error) {
 	sc, err := accessor.DecodeAccessToken(tokenStr)
 	if err != nil {
 		accessor.logger.Error("access_token CheckAccessToken error1", zap.String("err", err.Error()))
@@ -86,7 +86,7 @@ func (accessor *tokenAccessor) RefreshAccessToken(c *gin.Context, tokenStr strin
 	}
 
 	err = accessor.db.Table(TableName).Where("`jti`=?", jti).Updates(map[string]interface{}{
-		"exp_time": startTime + token.AccessTokenExpireInterval,
+		"exp_time": startTime + standard.AccessTokenExpireInterval,
 	}).Error
 
 	if err != nil {
@@ -94,6 +94,6 @@ func (accessor *tokenAccessor) RefreshAccessToken(c *gin.Context, tokenStr strin
 	}
 
 	resp.AccessToken = refreshToken
-	resp.ExpiresIn = token.AccessTokenExpireInterval
+	resp.ExpiresIn = standard.AccessTokenExpireInterval
 	return
 }
