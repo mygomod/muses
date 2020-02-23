@@ -6,13 +6,13 @@ import (
 	"fmt"
 	"github.com/fvbock/endless"
 	ogin "github.com/gin-gonic/gin"
-	"github.com/goecology/muses/pkg/app"
-	"github.com/goecology/muses/pkg/cmd"
-	"github.com/goecology/muses/pkg/common"
-	"github.com/goecology/muses/pkg/logger"
-	"github.com/goecology/muses/pkg/prom"
-	"github.com/goecology/muses/pkg/server/gin"
-	"github.com/goecology/muses/pkg/system"
+	"github.com/i2eco/muses/pkg/app"
+	"github.com/i2eco/muses/pkg/cmd"
+	"github.com/i2eco/muses/pkg/common"
+	"github.com/i2eco/muses/pkg/logger"
+	"github.com/i2eco/muses/pkg/prom"
+	"github.com/i2eco/muses/pkg/server/gin"
+	"github.com/i2eco/muses/pkg/system"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
@@ -33,6 +33,17 @@ type Muses struct {
 	router        func() *ogin.Engine
 	isCmdRegister bool
 	isGinRegister bool
+}
+
+var (
+	MUSES_DEBUG = false
+)
+
+// 初始化环境变量，方便调试
+func init() {
+	if os.Getenv("MUSES_DEBUG") == "true" {
+		MUSES_DEBUG = true
+	}
 }
 
 // 注册相应组件
@@ -178,6 +189,7 @@ func isPathExist(path string) error {
 // 回调start函数
 func (m *Muses) startFn(cobraCommand *cobra.Command, args []string) (err error) {
 	fmt.Println(system.BuildInfo.LongForm())
+
 	if m.isCmdRegister {
 		m.SetCfg(cmd.ConfigPath)
 		if m.err != nil {
@@ -197,6 +209,7 @@ func (m *Muses) startFn(cobraCommand *cobra.Command, args []string) (err error) 
 		if cmd.Addr != "" {
 			addr = cmd.Addr
 		}
+
 		// 主服务器
 		endless.DefaultReadTimeOut = gin.Config().Muses.Server.Gin.ReadTimeout.Duration
 		endless.DefaultWriteTimeOut = gin.Config().Muses.Server.Gin.WriteTimeout.Duration
@@ -252,5 +265,7 @@ func (m *Muses) mustRun() (err error) {
 
 // todo 高亮
 func (m *Muses) printInfo(info ...interface{}) {
-	fmt.Println(info)
+	if MUSES_DEBUG {
+		fmt.Println(info)
+	}
 }

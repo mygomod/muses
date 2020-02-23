@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/goecology/muses"
-	mgin "github.com/goecology/muses/pkg/server/gin"
+	"github.com/i2eco/muses"
+	mgin "github.com/i2eco/muses/pkg/server/gin"
 	"net/http"
 )
 
@@ -30,10 +30,13 @@ var cfg = `
 `
 
 func main() {
-	if err := muses.Container(
-		[]byte(cfg),
+	app := muses.Container(
 		mgin.Register,
-	); err != nil {
+	)
+
+	app.SetCfg([]byte(cfg))
+	err := app.Run()
+	if err != nil {
 		panic(err)
 	}
 

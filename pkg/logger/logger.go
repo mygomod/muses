@@ -6,7 +6,7 @@ import (
 	"log"
 	"sync"
 
-	"github.com/goecology/muses/pkg/common"
+	"github.com/i2eco/muses/pkg/common"
 
 	"github.com/BurntSushi/toml"
 	"go.uber.org/zap"
@@ -54,6 +54,11 @@ func DefaultLogger() *Client {
 		})
 	} else {
 		logClient = obj.(*Client)
+	}
+
+	// 如果log client 不存在，提示用户配置里需要设置日志配置
+	if logClient == nil {
+		panic("please set logger config")
 	}
 	return logClient
 }

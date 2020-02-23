@@ -1,7 +1,7 @@
 package muses
 
 import (
-	"github.com/goecology/muses/pkg/common"
+	"github.com/i2eco/muses/pkg/common"
 	"io/ioutil"
 	"reflect"
 )

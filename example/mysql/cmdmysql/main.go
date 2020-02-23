@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/goecology/muses"
-	"github.com/goecology/muses/pkg/cmd"
-	"github.com/goecology/muses/pkg/database/mysql"
+	"github.com/i2eco/muses"
+	"github.com/i2eco/muses/pkg/cmd"
+	"github.com/i2eco/muses/pkg/database/mysql"
 )
 
 type User struct {

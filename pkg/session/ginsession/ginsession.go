@@ -6,7 +6,7 @@ import (
 	"github.com/gin-contrib/sessions/memstore"
 	"github.com/gin-contrib/sessions/redis"
 	"github.com/gin-gonic/gin"
-	"github.com/goecology/muses/pkg/common"
+	"github.com/i2eco/muses/pkg/common"
 	"github.com/pkg/errors"
 )
 

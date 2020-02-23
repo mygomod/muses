@@ -7,7 +7,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 
-	"github.com/goecology/muses/pkg/common"
+	"github.com/i2eco/muses/pkg/common"
 )
 
 var defaultCaller = &callerStore{

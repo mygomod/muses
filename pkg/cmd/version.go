@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/goecology/muses/pkg/system"
+	"github.com/i2eco/muses/pkg/system"
 	"github.com/spf13/cobra"
 )
 

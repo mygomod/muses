@@ -7,7 +7,7 @@ import (
 type Oss interface {
 	PutObject(dstPath string, reader io.Reader, options ...Option) error
 	PutObjectFromFile(dstPath, srcPath string, options ...Option) error
-	GetObject(dstPath string, options ...Option) (io.ReadCloser, error)
+	GetObject(dstPath string, options ...Option) ([]byte, error)
 	GetObjectToFile(dstPath, srcPath string, options ...Option) error
 	DeleteObject(dstPath string) error
 	DeleteObjects(dstPaths []string, options ...Option) (DeleteObjectsResult, error)

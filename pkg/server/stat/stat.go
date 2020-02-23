@@ -7,10 +7,10 @@ import (
 	"github.com/BurntSushi/toml"
 	"github.com/gin-gonic/gin"
 
-	"github.com/goecology/muses/pkg/cmd"
-	"github.com/goecology/muses/pkg/common"
-	"github.com/goecology/muses/pkg/logger"
-	"github.com/goecology/muses/pkg/registry"
+	"github.com/i2eco/muses/pkg/cmd"
+	"github.com/i2eco/muses/pkg/common"
+	"github.com/i2eco/muses/pkg/logger"
+	"github.com/i2eco/muses/pkg/registry"
 
 	"github.com/zsais/go-gin-prometheus"
 	"go.uber.org/zap"
