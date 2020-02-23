@@ -31,22 +31,6 @@ type Client struct {
 	cfg CallerCfg
 }
 
-// func (client *Client) CreateAccessToken(c *gin.Context, uid int, startTime int64) (resp standard.AccessTokenTicket, err error) {
-// 	return client.delegate.CreateAccessToken(c, uid, startTime)
-// }
-//
-// func (client *Client) CheckAccessToken(c *gin.Context, tokenStr string) bool {
-// 	panic("implement me")
-// }
-//
-// func (client *Client) RefreshAccessToken(c *gin.Context, tokenStr string, startTime int64) (resp standard.AccessTokenTicket, err error) {
-// 	panic("implement me")
-// }
-//
-// func (client *Client) DecodeAccessToken(tokenStr string) (resp map[string]interface{}, err error) {
-// 	panic("implement me")
-// }
-
 func Register() common.Caller {
 	return defaultCallerStore
 }
