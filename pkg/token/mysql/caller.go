@@ -2,11 +2,10 @@ package mysql
 
 import (
 	"github.com/BurntSushi/toml"
-
-	"github.com/goecology/muses/pkg/common"
-	"github.com/goecology/muses/pkg/database/mysql"
-	"github.com/goecology/muses/pkg/logger"
-	"github.com/goecology/muses/pkg/token"
+	"github.com/i2eco/muses/pkg/common"
+	"github.com/i2eco/muses/pkg/database/mysql"
+	"github.com/i2eco/muses/pkg/logger"
+	"github.com/i2eco/muses/pkg/token"
 )
 
 var defaultCallerStore = &callerStore{}

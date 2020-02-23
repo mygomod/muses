@@ -2,13 +2,10 @@ package mysql
 
 import (
 	"time"
-
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
-
-	"github.com/goecology/muses/pkg/logger"
-	"github.com/goecology/muses/pkg/token"
-
+	"github.com/i2eco/muses/pkg/logger"
+	"github.com/i2eco/muses/pkg/token"
 	"go.uber.org/zap"
 )
 

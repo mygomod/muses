@@ -2,11 +2,10 @@ package redis
 
 import (
 	"github.com/BurntSushi/toml"
-
-	"github.com/goecology/muses/pkg/cache/redis"
-	"github.com/goecology/muses/pkg/common"
-	"github.com/goecology/muses/pkg/logger"
-	"github.com/goecology/muses/pkg/token"
+	"github.com/i2eco/muses/pkg/cache/redis"
+	"github.com/i2eco/muses/pkg/common"
+	"github.com/i2eco/muses/pkg/logger"
+	"github.com/i2eco/muses/pkg/token"
 )
 
 var defaultCallerStore = &callerStore{}

@@ -4,10 +4,10 @@ type Cfg struct {
 	Muses struct{
 		Token struct{
 			JWT struct{
-				CallerCfg `toml: "redis"`
-			} `toml: "jwt"`
+				CallerCfg `toml:"redis"`
+			} `toml:"jwt"`
 		} `toml:"token"`
-	} `toml: "muses"`
+	} `toml:"muses"`
 }
 
 type CallerCfg struct {

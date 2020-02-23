@@ -2,12 +2,10 @@ package redis
 
 import (
 	"fmt"
-
 	"github.com/gin-gonic/gin"
-
-	"github.com/goecology/muses/pkg/cache/mixcache/standard"
-	"github.com/goecology/muses/pkg/logger"
-	"github.com/goecology/muses/pkg/token"
+	"github.com/i2eco/muses/pkg/cache/mixcache/standard"
+	"github.com/i2eco/muses/pkg/logger"
+	"github.com/i2eco/muses/pkg/token"
 )
 
 // TODO(配置中读取)
