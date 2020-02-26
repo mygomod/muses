@@ -23,6 +23,7 @@ var orderCallerList = []callerAttr{
 	{common.ModStatName},
 	{common.ModGinName},
 	{common.ModCmdName},
+	{common.ModWechatName},
 }
 
 type callerAttr struct {
