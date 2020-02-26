@@ -72,7 +72,7 @@ func provider(cfg CallerCfg) (client standard.TokenAccessor, err error) {
 	if len(cfg.LoggerRef) > 0 {
 		loggerClient = logger.Caller(cfg.LoggerRef)
 	} else {
-		loggerClient = logger.Provider(logger.CallerCfg(cfg.LoggerCallerCfg))
+		loggerClient = logger.Provider(logger.CallerCfg(cfg.Logger))
 	}
 
 	if cfg.Mode == "mysql" {
@@ -89,7 +89,7 @@ func createMysqlAccessor(cfg CallerCfg, loggerClient *logger.Client) (accessor s
 	if len(cfg.MysqlRef) > 0 {
 		db = mysql.Caller(cfg.MysqlRef)
 	} else {
-		db, err = mysql.Provider(mysql.CallerCfg(cfg.MysqlCallerCfg))
+		db, err = mysql.Provider(mysql.CallerCfg(cfg.Mysql))
 		if err != nil {
 			return
 		}
@@ -102,7 +102,7 @@ func createRedisAccessor(cfg CallerCfg, loggerClient *logger.Client) (standard.T
 	if len(cfg.RedisRef) > 0 {
 		redisClient = redis.Caller(cfg.RedisRef)
 	} else {
-		redisClient = redis.Provider(redis.CallerCfg(cfg.RedisCallerCfg))
+		redisClient = redis.Provider(redis.CallerCfg(cfg.Redis))
 	}
 
 	return redis2.InitRedisTokenAccessor(loggerClient, redisClient), nil
