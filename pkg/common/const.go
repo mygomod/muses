@@ -1,7 +1,7 @@
 package common
 
 const SystemLogger = "system"
-const MetricPrefix = "goecology"
+const MetricPrefix = "i2eco"
 
 const ModAppName = "app"
 const ModLoggerName = "logger"
@@ -18,4 +18,5 @@ const ModTplBeegoName = "tplbeego"
 const ModStatName = "stat"
 const ModGinName = "gin"
 const ModEtcdName = "etcd"
+const ModWechatName = "etcd"
 const ModTokenName = "token"

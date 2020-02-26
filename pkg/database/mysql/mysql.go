@@ -2,12 +2,10 @@ package mysql
 
 import (
 	"sync"
-
 	"github.com/BurntSushi/toml"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
-
-	"github.com/goecology/muses/pkg/common"
+	"github.com/i2eco/muses/pkg/common"
 )
 
 var defaultCaller = &callerStore{

@@ -7,13 +7,15 @@ import (
 	"github.com/BurntSushi/toml"
 	"github.com/jinzhu/gorm"
 
-	"github.com/goecology/muses/pkg/cache/redis"
-	"github.com/goecology/muses/pkg/common"
-	"github.com/goecology/muses/pkg/database/mysql"
-	"github.com/goecology/muses/pkg/logger"
-	mysqlToken "github.com/goecology/muses/pkg/token/mysql"
-	redis2 "github.com/goecology/muses/pkg/token/redis"
-	"github.com/goecology/muses/pkg/token/standard"
+
+	mysqlToken "github.com/i2eco/muses/pkg/token/mysql"
+	redis2 "github.com/i2eco/muses/pkg/token/redis"
+	"github.com/i2eco/muses/pkg/token/standard"
+
+	"github.com/i2eco/muses/pkg/cache/redis"
+	"github.com/i2eco/muses/pkg/common"
+	"github.com/i2eco/muses/pkg/database/mysql"
+	"github.com/i2eco/muses/pkg/logger"
 )
 
 var defaultCallerStore = &callerStore{

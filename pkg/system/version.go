@@ -29,6 +29,7 @@ type buildInfo struct {
 	GolangVersion string `json:"golangVersion"`
 	BuildStatus   string `json:"buildStatus"`
 	BuildTime     string `json:"buildTime"`
+	BuildDebug    bool   `json:"buildDebug"`
 }
 
 // RunInfo describes version information about the binary run.
@@ -131,4 +132,5 @@ func init() {
 		BuildStatus:   buildStatus,
 		BuildTime:     buildTime,
 	}
+
 }

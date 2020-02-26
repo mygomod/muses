@@ -6,7 +6,7 @@ import (
 	"github.com/labstack/echo"
 	session "github.com/sevenNt/echo-session"
 
-	"github.com/goecology/muses/pkg/common"
+	"github.com/i2eco/muses/pkg/common"
 )
 
 var defaultCaller = &callerStore{

@@ -12,7 +12,8 @@ const (
 
 // DeleteObjectsResult defines result of DeleteObjects request
 type DeleteObjectsResult struct {
-	Name           string
+	Space          string
+	Local          string
 	DeletedObjects []string // Deleted object key list
 }
 

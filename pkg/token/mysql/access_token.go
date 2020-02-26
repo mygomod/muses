@@ -15,6 +15,6 @@ type AccessToken struct {
 	LogoutTime int64  `gorm:"not null" json:"logout_time" form:"logout_time"`
 }
 
-func (*AccessToken) TableName() string {
+func (AccessToken) TableName() string {
 	return TableName
 }

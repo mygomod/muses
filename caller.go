@@ -1,7 +1,7 @@
 package muses
 
 import (
-	"github.com/goecology/muses/pkg/common"
+	"github.com/i2eco/muses/pkg/common"
 	"io/ioutil"
 	"reflect"
 )
@@ -23,6 +23,7 @@ var orderCallerList = []callerAttr{
 	{common.ModStatName},
 	{common.ModGinName},
 	{common.ModCmdName},
+	{common.ModWechatName},
 }
 
 type callerAttr struct {

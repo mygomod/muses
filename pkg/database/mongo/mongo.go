@@ -8,7 +8,7 @@ import (
 	"github.com/BurntSushi/toml"
 	"github.com/globalsign/mgo"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/goecology/muses/pkg/common"
+	"github.com/i2eco/muses/pkg/common"
 )
 
 var defaultCaller = &callerStore{
