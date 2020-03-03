@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	"github.com/coreos/etcd/clientv3"
+	"go.etcd.io/etcd/clientv3"
 )
 
 var (
@@ -18,7 +18,7 @@ var (
 //	if client == nil {
 //		logger.DefaultLogger().Error("Could not initialize the etcdv3 client")
 //	}
-//	serverStatAddrKey = "/muses/serverStateAddr/" + app.Config().Muses.App.AppKey()
+//	serverStatAddrKey = "/muses/serverStateAddr/" + app.Context().Muses.App.AppKey()
 //}
 
 func RegisterServerStatAddr(addr string) error {

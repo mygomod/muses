@@ -4,7 +4,7 @@ import (
 	"sync"
 
 	"github.com/BurntSushi/toml"
-	"github.com/coreos/etcd/clientv3"
+	"go.etcd.io/etcd/clientv3"
 
 	"github.com/i2eco/muses/pkg/common"
 )
