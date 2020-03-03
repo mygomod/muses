@@ -1,4 +1,4 @@
-package token
+package standard
 
 import (
 	"errors"
@@ -30,7 +30,7 @@ func (g *JwtTokenAccessor) EncodeAccessToken(jwtId int, uid int, startTime int64
 	return
 }
 
-func (g *JwtTokenAccessor) DecodeAccessToken(tokenStr string) (resp jwt.MapClaims, err error) {
+func (g *JwtTokenAccessor) DecodeAccessToken(tokenStr string) (resp map[string]interface{}, err error) {
 	tokenParse, err := jwt.Parse(tokenStr, func(jwtToken *jwt.Token) (interface{}, error) {
 		return []byte(AccessTokenKey), nil
 	})

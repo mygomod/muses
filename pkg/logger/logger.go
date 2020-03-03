@@ -72,13 +72,13 @@ func (c *callerStore) InitCfg(cfg []byte) error {
 
 func (c *callerStore) InitCaller() error {
 	for name, cfg := range c.cfg.Muses.Logger {
-		db := provider(cfg)
+		db := Provider(cfg)
 		defaultCaller.caller.Store(name, db)
 	}
 	return nil
 }
 
-func provider(cfg CallerCfg) (db *Client) {
+func Provider(cfg CallerCfg) (db *Client) {
 	var js string
 	if cfg.Debug {
 		js = fmt.Sprintf(`{

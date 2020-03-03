@@ -48,13 +48,13 @@ func (c *callerStore) InitCfg(cfg []byte) error {
 
 func (c *callerStore) InitCaller() error {
 	for name, cfg := range c.cfg.Muses.Redis {
-		db := provider(cfg)
+		db := Provider(cfg)
 		defaultCaller.caller.Store(name, db)
 	}
 	return nil
 }
 
-func provider(cfg CallerCfg) (resp *Client) {
+func Provider(cfg CallerCfg) (resp *Client) {
 	dialOptions := []redis.DialOption{
 		redis.DialConnectTimeout(cfg.ConnectTimeout.Duration),
 		redis.DialReadTimeout(cfg.ReadTimeout.Duration),
