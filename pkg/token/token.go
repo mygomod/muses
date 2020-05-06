@@ -3,7 +3,6 @@ package token
 import (
 	"errors"
 	"sync"
-
 	"github.com/BurntSushi/toml"
 	"github.com/jinzhu/gorm"
 
@@ -76,7 +75,6 @@ func provider(cfg CallerCfg) (client standard.TokenAccessor, err error) {
 	} else {
 		loggerClient = logger.Provider(logger.CallerCfg(cfg.Logger))
 	}
-
 	if cfg.Mode == "mysql" {
 		return createMysqlAccessor(cfg, loggerClient)
 	} else if cfg.Mode == "redis" {

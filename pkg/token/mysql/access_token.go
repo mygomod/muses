@@ -4,7 +4,7 @@ package mysql
 const TableName = "access_token"
 
 type AccessToken struct {
-	Jti        int    `gorm:"not null" json:"jti" form:"jti" gorm:"primary_key"`
+	Jti        int    `gorm:"not null;primary_key;AUTO_INCREMENT" json:"jti" form:"jti"`
 	Sub        int    `gorm:"not null" json:"sub" form:"sub"`
 	IaTime     int64  `gorm:"not null" json:"ia_time" form:"ia_time"`
 	ExpTime    int64  `gorm:"not null;" json:"exp_time" form:"exp_time"`

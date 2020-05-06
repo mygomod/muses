@@ -1,10 +1,10 @@
 package mysql
 
 import (
+	"go.uber.org/zap"
 	"time"
-
 	"github.com/gin-gonic/gin"
-
+	"github.com/jinzhu/gorm"
 	"github.com/i2eco/muses/pkg/logger"
 	"github.com/i2eco/muses/pkg/token/standard"
 )
@@ -43,6 +43,10 @@ func (accessor *mysqlTokenAccessor) CreateAccessToken(c *gin.Context, uid int, s
 		IsLogout:   0,
 		IsInvalid:  0,
 		LogoutTime: 0,
+	}
+	if err = accessor.db.Create(AccessTokenData).Error; err != nil {
+		accessor.logger.Error("create accessToken create error", zap.Error(err))
+		return
 	}
 
 	tokenString, err := accessor.EncodeAccessToken(AccessTokenData.Jti, uid, startTime)

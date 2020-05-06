@@ -58,9 +58,17 @@ func (accessor *redisTokenAccessor) CheckAccessToken(c *gin.Context, tokenStr st
 	if err != nil {
 		return false
 	}
-	uid := sc["jti"]
-	_, err = accessor.client.Get(fmt.Sprintf(tokenKeyPattern, uid))
-	return err == nil
+	uid := sc["jti"].(float64)
+	uidInt := int(uid)
+	info, err := accessor.client.Get(fmt.Sprintf(tokenKeyPattern, uidInt))
+	if err != nil {
+		return false
+	}
+	// info 为nil，说明数据不存在
+	if info == nil {
+		return false
+	}
+	return true
 }
 
 func (accessor *redisTokenAccessor) RefreshAccessToken(c *gin.Context, tokenStr string, startTime int64) (resp standard.AccessTokenTicket, err error) {
@@ -68,6 +76,7 @@ func (accessor *redisTokenAccessor) RefreshAccessToken(c *gin.Context, tokenStr 
 	if err != nil {
 		return
 	}
-	uid := sc["jti"].(int)
-	return accessor.CreateAccessToken(c, uid, startTime)
+	uid := sc["jti"].(float64)
+	uidInt := int(uid)
+	return accessor.CreateAccessToken(c, uidInt, startTime)
 }

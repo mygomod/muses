@@ -26,6 +26,13 @@ func NewOss(cdnName string, bucket string, isDelete bool) (client standard.Oss, 
 }
 
 func (c *Client) PutObject(dstPath string, reader io.Reader, options ...standard.Option) error {
+	// 创建目标目录
+	dstPath = c.bucket + "/" + dstPath
+	err := os.MkdirAll(filepath.Dir(dstPath), os.ModePerm)
+	if err != nil {
+		return err
+	}
+
 	fileByte, err := ioutil.ReadAll(reader)
 	if err != nil {
 		return err
@@ -36,7 +43,6 @@ func (c *Client) PutObject(dstPath string, reader io.Reader, options ...standard
 func (c *Client) PutObjectFromFile(dstPath, srcPath string, options ...standard.Option) (err error) {
 	// 创建目标目录
 	dstPath = c.bucket + "/" + dstPath
-
 	err = os.MkdirAll(filepath.Dir(dstPath), os.ModePerm)
 	if err != nil {
 		return
