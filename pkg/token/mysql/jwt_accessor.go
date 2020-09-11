@@ -1,12 +1,12 @@
 package mysql
 
 import (
-	"go.uber.org/zap"
-	"time"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
-	"github.com/i2eco/muses/pkg/logger"
-	"github.com/i2eco/muses/pkg/token/standard"
+	"github.com/mygomod/muses/pkg/logger"
+	"github.com/mygomod/muses/pkg/token/standard"
+	"go.uber.org/zap"
+	"time"
 )
 
 // 如果你希望使用这个实现来作为token的实现，那么需要在配置文件里面设置：

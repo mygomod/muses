@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/i2eco/muses"
-	"github.com/i2eco/muses/pkg/cmd"
-	"github.com/i2eco/muses/pkg/database/mysql"
+	"github.com/mygomod/muses"
+	"github.com/mygomod/muses/pkg/cmd"
+	"github.com/mygomod/muses/pkg/database/mysql"
 )
 
 type User struct {

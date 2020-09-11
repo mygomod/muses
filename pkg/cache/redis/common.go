@@ -1,7 +1,7 @@
 package redis
 
 import (
-	"github.com/i2eco/muses/pkg/common"
+	"github.com/mygomod/muses/pkg/common"
 )
 
 type Cfg struct {

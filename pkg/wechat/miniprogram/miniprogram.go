@@ -1,14 +1,13 @@
 package miniprogram
 
 import (
-	"github.com/i2eco/muses/pkg/wechat/context"
+	"github.com/mygomod/muses/pkg/wechat/context"
 )
 
 // MiniProgram struct extends context
 type MiniProgram struct {
 	*context.Context
 }
-
 
 // NewMiniProgram 实例化小程序接口
 func NewMiniProgram(context *context.Context) *MiniProgram {

@@ -28,8 +28,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/i2eco/muses/pkg/logger"
-	"github.com/i2eco/muses/pkg/utils"
+	"github.com/mygomod/muses/pkg/logger"
+	"github.com/mygomod/muses/pkg/utils"
 )
 
 var (

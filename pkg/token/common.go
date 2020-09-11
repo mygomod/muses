@@ -1,9 +1,9 @@
 package token
 
 import (
-	"github.com/i2eco/muses/pkg/cache/redis"
-	"github.com/i2eco/muses/pkg/database/mysql"
-	"github.com/i2eco/muses/pkg/logger"
+	"github.com/mygomod/muses/pkg/cache/redis"
+	"github.com/mygomod/muses/pkg/database/mysql"
+	"github.com/mygomod/muses/pkg/logger"
 )
 
 type Cfg struct {
@@ -25,11 +25,11 @@ type CallerCfg struct {
 	Mode string
 
 	LoggerRef string
-	Logger LoggerCallerCfg `toml:"logger"`
+	Logger    LoggerCallerCfg `toml:"logger"`
 
 	MysqlRef string
-	Mysql MysqlCallerCfg `toml:"mysql"`
+	Mysql    MysqlCallerCfg `toml:"mysql"`
 
 	RedisRef string
-	Redis RedisCallerCfg `toml:"redis"`
+	Redis    RedisCallerCfg `toml:"redis"`
 }

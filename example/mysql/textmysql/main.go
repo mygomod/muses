@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/i2eco/muses"
-	"github.com/i2eco/muses/pkg/database/mysql"
+	"github.com/mygomod/muses"
+	"github.com/mygomod/muses/pkg/database/mysql"
 )
 
 var cfg = `

@@ -5,9 +5,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/i2eco/muses/pkg/cache/redis"
-	"github.com/i2eco/muses/pkg/logger"
-	"github.com/i2eco/muses/pkg/token/standard"
+	"github.com/mygomod/muses/pkg/cache/redis"
+	"github.com/mygomod/muses/pkg/logger"
+	"github.com/mygomod/muses/pkg/token/standard"
 )
 
 // TODO(配置中读取)

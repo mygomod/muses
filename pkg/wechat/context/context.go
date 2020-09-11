@@ -1,10 +1,10 @@
 package context
 
 import (
-	"github.com/i2eco/muses/pkg/wechat/cache"
+	"github.com/go-resty/resty/v2"
+	"github.com/mygomod/muses/pkg/wechat/cache"
 	"net/http"
 	"sync"
-	"github.com/go-resty/resty/v2"
 )
 
 // Context struct
@@ -17,7 +17,7 @@ type Context struct {
 	PayNotifyURL   string
 	PayKey         string
 
-	Cache cache.Cache
+	Cache       cache.Cache
 	RestyClient *resty.Client
 
 	Writer  http.ResponseWriter

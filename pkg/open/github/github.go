@@ -3,7 +3,7 @@ package github
 import (
 	"github.com/BurntSushi/toml"
 	"github.com/go-resty/resty/v2"
-	"github.com/i2eco/muses/pkg/common"
+	"github.com/mygomod/muses/pkg/common"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/github"
 )
@@ -19,8 +19,8 @@ type callerStore struct {
 }
 
 type Client struct {
-	cfg   CallerCfg
-	Oauth *oauth2.Config
+	cfg         CallerCfg
+	Oauth       *oauth2.Config
 	RestyClient *resty.Client
 }
 

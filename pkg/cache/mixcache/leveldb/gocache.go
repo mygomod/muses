@@ -2,7 +2,7 @@ package leveldb
 
 import (
 	"encoding/json"
-	"github.com/i2eco/muses/pkg/cache/mixcache/standard"
+	"github.com/mygomod/muses/pkg/cache/mixcache/standard"
 	"github.com/pkg/errors"
 	"github.com/syndtr/goleveldb/leveldb"
 )

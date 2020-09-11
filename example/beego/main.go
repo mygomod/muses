@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/i2eco/muses"
-	"github.com/i2eco/muses/pkg/tpl/tplbeego"
+	"github.com/mygomod/muses"
+	"github.com/mygomod/muses/pkg/tpl/tplbeego"
 )
 
 var cfg = `

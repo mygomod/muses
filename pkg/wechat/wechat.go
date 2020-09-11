@@ -3,10 +3,10 @@ package wechat
 import (
 	"github.com/BurntSushi/toml"
 	"github.com/go-resty/resty/v2"
-	"github.com/i2eco/muses/pkg/common"
-	"github.com/i2eco/muses/pkg/wechat/cache"
-	"github.com/i2eco/muses/pkg/wechat/context"
-	"github.com/i2eco/muses/pkg/wechat/miniprogram"
+	"github.com/mygomod/muses/pkg/common"
+	"github.com/mygomod/muses/pkg/wechat/cache"
+	"github.com/mygomod/muses/pkg/wechat/context"
+	"github.com/mygomod/muses/pkg/wechat/miniprogram"
 	"sync"
 )
 

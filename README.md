@@ -1,11 +1,11 @@
 ## 1 介绍
-[Muses](https://github.com/i2eco/muses)是希腊神话九位古老文艺女神的总称。正如她 所具有的功能一样，里面拥有各种GO具有艺术性的组件。
+[Muses](https://github.com/mygomod/muses)是希腊神话九位古老文艺女神的总称。正如她 所具有的功能一样，里面拥有各种GO具有艺术性的组件。
 
-拥有了[Muses](https://github.com/i2eco/muses)，你就能够快速愉快的启动你的项目。
+拥有了[Muses](https://github.com/mygomod/muses)，你就能够快速愉快的启动你的项目。
 
 
 ## 2 功能点
-[Muses](https://github.com/i2eco/muses)是一个配置驱动组件的启动器，你可以将他很方便的与其他框架gin、echo、beego、iris结合起来使用，能够通过几行配置，立刻使用以下功能
+[Muses](https://github.com/mygomod/muses)是一个配置驱动组件的启动器，你可以将他很方便的与其他框架gin、echo、beego、iris结合起来使用，能够通过几行配置，立刻使用以下功能
 
 ### 2.1 命令行
 * [x] 启动器命令行

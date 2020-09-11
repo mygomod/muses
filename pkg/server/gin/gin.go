@@ -2,8 +2,8 @@ package gin
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/i2eco/muses/pkg/common"
-	"github.com/i2eco/muses/pkg/server/gin/plugins/ginzap"
+	"github.com/mygomod/muses/pkg/common"
+	"github.com/mygomod/muses/pkg/server/gin/plugins/ginzap"
 	"time"
 
 	"github.com/BurntSushi/toml"

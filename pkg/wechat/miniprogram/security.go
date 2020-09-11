@@ -3,12 +3,12 @@ package miniprogram
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/i2eco/muses/pkg/wechat/util"
+	"github.com/mygomod/muses/pkg/wechat/util"
 )
 
 const (
 	getImgSecCheckURL = "https://api.weixin.qq.com/wxa/img_sec_check?access_token=%s"
-	getMediaCheckURL = "https://api.weixin.qq.com/wxa/media_check_async?access_token=%s"
+	getMediaCheckURL  = "https://api.weixin.qq.com/wxa/media_check_async?access_token=%s"
 	getMsgSecCheckURL = "https://api.weixin.qq.com/wxa/msg_sec_check?access_token=%s"
 )
 
@@ -16,7 +16,6 @@ const (
 type ResSecurity struct {
 	util.CommonError
 }
-
 
 // CheckImg 检测图片
 // 文档地址： https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/sec-check/security.imgSecCheck.html
@@ -27,12 +26,12 @@ func (wxa *MiniProgram) CheckImg(fileName string) (response ResSecurity, err err
 		return
 	}
 
-	var info  []byte
-	info,err = wxa.Context.PostFile("media",fileName,fmt.Sprintf(getImgSecCheckURL,accessToken))
+	var info []byte
+	info, err = wxa.Context.PostFile("media", fileName, fmt.Sprintf(getImgSecCheckURL, accessToken))
 	if err != nil {
 		return
 	}
-	err = json.Unmarshal(info,&response)
+	err = json.Unmarshal(info, &response)
 	return
 }
 
@@ -48,7 +47,6 @@ func (wxa *MiniProgram) CheckImg(fileName string) (response ResSecurity, err err
 //	return
 //}
 
-
 type ReqCheckMsg struct {
 	Content string `json:"content"`
 }
@@ -62,15 +60,15 @@ func (wxa *MiniProgram) CheckMsg(content string) (response ResSecurity, err erro
 		return
 	}
 
-	var info  []byte
-	req := ReqCheckMsg {
-	 	Content:content,
+	var info []byte
+	req := ReqCheckMsg{
+		Content: content,
 	}
 
-	info,err = wxa.Context.PostJSON(fmt.Sprintf(getMsgSecCheckURL,accessToken),req)
+	info, err = wxa.Context.PostJSON(fmt.Sprintf(getMsgSecCheckURL, accessToken), req)
 	if err != nil {
 		return
 	}
-	err = json.Unmarshal(info,&response)
+	err = json.Unmarshal(info, &response)
 	return
 }

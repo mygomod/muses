@@ -3,7 +3,7 @@ package miniprogram
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/i2eco/muses/pkg/wechat/util"
+	"github.com/mygomod/muses/pkg/wechat/util"
 )
 
 const (
@@ -23,7 +23,7 @@ type ResCode2Session struct {
 func (wxa *MiniProgram) Code2Session(jsCode string) (result ResCode2Session, err error) {
 	urlStr := fmt.Sprintf(code2SessionURL, wxa.AppID, wxa.AppSecret, jsCode)
 	var response []byte
-	response, err =  wxa.Context.HTTPGet(urlStr)
+	response, err = wxa.Context.HTTPGet(urlStr)
 	if err != nil {
 		return
 	}
@@ -44,5 +44,5 @@ func (m *MiniProgram) Login(code, encryptedData, iv string) (wxUserInfo *UserInf
 	if err != nil {
 		return nil, err
 	}
-	return m.Decrypt(wXBizDataCrypt.SessionKey,encryptedData, iv)
+	return m.Decrypt(wXBizDataCrypt.SessionKey, encryptedData, iv)
 }

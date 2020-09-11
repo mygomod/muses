@@ -1,7 +1,7 @@
 package muses
 
 import (
-	"github.com/i2eco/muses/pkg/common"
+	"github.com/mygomod/muses/pkg/common"
 	"io/ioutil"
 	"reflect"
 )

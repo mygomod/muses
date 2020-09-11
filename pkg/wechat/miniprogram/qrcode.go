@@ -3,8 +3,8 @@ package miniprogram
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/mygomod/muses/pkg/wechat/util"
 	"strings"
-	"github.com/i2eco/muses/pkg/wechat/util"
 )
 
 const (
@@ -48,7 +48,7 @@ func (wxa *MiniProgram) fetchCode(urlStr string, body interface{}) (response []b
 
 	urlStr = fmt.Sprintf(urlStr, accessToken)
 	var contentType string
-	response, contentType, err =  wxa.Context.PostJSONWithRespContentType(urlStr, body)
+	response, contentType, err = wxa.Context.PostJSONWithRespContentType(urlStr, body)
 	if err != nil {
 		return
 	}

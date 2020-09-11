@@ -3,10 +3,10 @@ package context
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/mygomod/muses/pkg/wechat/util"
 	"log"
 	"sync"
 	"time"
-	"github.com/i2eco/muses/pkg/wechat/util"
 )
 
 const (

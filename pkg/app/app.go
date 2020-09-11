@@ -2,7 +2,7 @@ package app
 
 import (
 	"github.com/BurntSushi/toml"
-	"github.com/i2eco/muses/pkg/common"
+	"github.com/mygomod/muses/pkg/common"
 )
 
 var defaultCaller = &callerStore{

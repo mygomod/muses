@@ -2,15 +2,15 @@ package main
 
 import (
 	"github.com/jinzhu/gorm"
-	"github.com/i2eco/muses"
-	"github.com/i2eco/muses/pkg/app"
-	"github.com/i2eco/muses/pkg/cache/redis"
-	"github.com/i2eco/muses/pkg/database/mongo"
-	"github.com/i2eco/muses/pkg/database/mysql"
-	"github.com/i2eco/muses/pkg/logger"
-	"github.com/i2eco/muses/pkg/server/gin"
-	"github.com/i2eco/muses/pkg/server/stat"
-	"github.com/i2eco/muses/pkg/session/ginsession"
+	"github.com/mygomod/muses"
+	"github.com/mygomod/muses/pkg/app"
+	"github.com/mygomod/muses/pkg/cache/redis"
+	"github.com/mygomod/muses/pkg/database/mongo"
+	"github.com/mygomod/muses/pkg/database/mysql"
+	"github.com/mygomod/muses/pkg/logger"
+	"github.com/mygomod/muses/pkg/server/gin"
+	"github.com/mygomod/muses/pkg/server/stat"
+	"github.com/mygomod/muses/pkg/session/ginsession"
 )
 
 var cfg = `

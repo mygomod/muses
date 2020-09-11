@@ -2,12 +2,12 @@ package mongo
 
 import (
 	"fmt"
-	"os"
-	"sync"
 	"github.com/BurntSushi/toml"
 	"github.com/globalsign/mgo"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/i2eco/muses/pkg/common"
+	"github.com/mygomod/muses/pkg/common"
+	"os"
+	"sync"
 )
 
 var defaultCaller = &callerStore{
@@ -32,7 +32,6 @@ func Caller(name string) *mgo.Session {
 	return obj.(*mgo.Session)
 }
 
-
 func CopyDb(name string) *mgo.Database {
 	obj, ok := defaultCaller.caller.Load(name)
 	if !ok {
@@ -41,12 +40,11 @@ func CopyDb(name string) *mgo.Database {
 	session := obj.(*mgo.Session)
 	for cfgName, cfg := range defaultCaller.cfg.Muses.Mongo {
 		if cfgName == name {
-			return  session.Copy().DB(cfg.Database)
+			return session.Copy().DB(cfg.Database)
 		}
 	}
 	return nil
 }
-
 
 func (c *callerStore) InitCfg(cfg []byte) error {
 	if err := toml.Unmarshal(cfg, &c.cfg); err != nil {
@@ -80,10 +78,9 @@ func provider(cfg CallerCfg) (resp *mgo.Session, err error) {
 	return session, err
 }
 
-
-type cLogger struct {}
+type cLogger struct{}
 
 func (c *cLogger) Output(calldepth int, s string) error {
-	fmt.Println("calldepth: ",calldepth,", s: ",s)
+	fmt.Println("calldepth: ", calldepth, ", s: ", s)
 	return nil
 }

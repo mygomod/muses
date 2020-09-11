@@ -2,19 +2,18 @@ package token
 
 import (
 	"errors"
-	"sync"
 	"github.com/BurntSushi/toml"
 	"github.com/jinzhu/gorm"
+	"sync"
 
+	mysqlToken "github.com/mygomod/muses/pkg/token/mysql"
+	redis2 "github.com/mygomod/muses/pkg/token/redis"
+	"github.com/mygomod/muses/pkg/token/standard"
 
-	mysqlToken "github.com/i2eco/muses/pkg/token/mysql"
-	redis2 "github.com/i2eco/muses/pkg/token/redis"
-	"github.com/i2eco/muses/pkg/token/standard"
-
-	"github.com/i2eco/muses/pkg/cache/redis"
-	"github.com/i2eco/muses/pkg/common"
-	"github.com/i2eco/muses/pkg/database/mysql"
-	"github.com/i2eco/muses/pkg/logger"
+	"github.com/mygomod/muses/pkg/cache/redis"
+	"github.com/mygomod/muses/pkg/common"
+	"github.com/mygomod/muses/pkg/database/mysql"
+	"github.com/mygomod/muses/pkg/logger"
 )
 
 var defaultCallerStore = &callerStore{
